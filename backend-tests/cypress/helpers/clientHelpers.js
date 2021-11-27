@@ -74,9 +74,78 @@ function createClientRequest(cy){
     }))
 }
 
+function editClient(){
+    cy.authenticateSession().then((response =>{
+    cy.request({
+    method: "GET",
+    url: "http://localhost:3000/api/clients",
+    headers:{
+        'X-User-Auth': JSON.stringify(Cypress.env().loginToken),
+        'Content-Type': 'application/json'
+    },
+    }).then((response =>{
+        const clientData = response.body[response.body.length - 1]
+        clientData.name = "Testnamn"
+        clientData.email = "testnamn@example.com"
+
+        cy.request({
+        method: "PUT",
+        url: "http://localhost:3000/api/client/" + clientData.id,
+        headers:{
+            'X-User-Auth': JSON.stringify(Cypress.env().loginToken),
+            'Content-Type': 'application/json'
+        },
+        body:clientData
+        
+    }).then((response =>{
+        const responseString = JSON.stringify(response.body)
+        expect(responseString).to.have.string(clientData.name)
+        expect(responseString).to.have.string(clientData.email)
+    }))
+
+    }))
+    cy.log(response.body)
+
+}))
+
+}
+
+function logOut(){
+    cy.authenticateSession().then((response =>{
+    cy.request({
+    method: "POST",
+    url: "http://localhost:3000/api/logout",
+    headers:{
+        'X-User-Auth': JSON.stringify(Cypress.env().loginToken),
+        'Content-Type': 'application/json'
+    },
+    }).then((response =>{
+        cy.request({
+        method: "PUT",
+        url: "http://localhost:3000/api/client/" + clientData.id,
+        headers:{
+            'X-User-Auth': JSON.stringify(Cypress.env().loginToken),
+            'Content-Type': 'application/json'
+        },
+        body:clientData
+        
+    }).then((response =>{
+        const responseString = JSON.stringify(response.body)
+        expect(responseString).to.have.string(clientData.name)
+        expect(responseString).to.have.string(clientData.email)
+    }))
+
+    }))
+    cy.log(response.body)
+
+}))
+
+}
+
 module.exports = {
     createRandomClientPayload, 
     createClientRequest, 
-    getAllClientsRequest
+    getAllClientsRequest,
+    editClient,
 }
 

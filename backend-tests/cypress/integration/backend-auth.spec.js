@@ -1,8 +1,12 @@
- /*
+ 
 import * as clientHelpers from '../helpers/clientHelpers'
+import * as deleteClients from '../helpers/deleteClients'
+import * as logoutapplication from '../helpers/logout'
 
 
-describe('Test suite, CLIENT', function(){
+
+
+describe('Test suite, Client', function(){
 
     it('Create a new client', function(){
        clientHelpers.createClientRequest(cy)
@@ -11,74 +15,24 @@ describe('Test suite, CLIENT', function(){
     it('Get all clients', function(){
         clientHelpers.getAllClientsRequest(cy)
      })
-
-})
-*/
-
-
-import * as clientpage from '../helpers/createclient'
-import * as billpage from '../helpers/createbills'
-import * as deleteclient from '../helpers/deleteClient'
-import *as updateClient from '../pages/updateClient'
-import * as logoutapplication from '../helpers/logoutpage'
-import * as createRoom from '../helpers/createRoom'
-
-describe('testing auth', function(){
+     
+     it("Edit client", function(){
+      clientHelpers.editClient()
+  })
    
-  // Test case 1
+     
+     it('Delete a client',function(){
 
-    it('Create and Get all clients', function(){
-        clientpage.createClientrequest(cy)
-        clientpage.getallClients(cy)
-        logoutapplication.logout(cy)
-        
-    })  
+      deleteClients.deleteClientAfterCreate(cy)
+     })
+
+     it('LOG OUT', function(){
+      logoutapplication.logout(cy)
+
+     })
     
-   
-    //TEST case 2
 
-    it('Create and delete client', function(){
-        deleteclient.createAndDeleteClient(cy)
-        logoutapplication.logout(cy)
-        
-    })
-       
-        
-    //Test case 3
-
-   it('Create and get all bills',function(){
-       billpage.createBillRequest(cy)
-       billpage.getallbills(cy)
-       logoutapplication.logout(cy)
-       
-   })
-
-    
-    //Test case 4
-
-    it('Create and delete bill',function(){
-       billpage.createAndDeleteBill(cy)
-       logoutapplication.logout(cy)
-       
-   })
-   // Test case 5
-   
-   it('create room', function(){
-       createRoom.createRoom(cy)
-       createRoom.getallRooms(cy)
-       logoutapplication.logout(cy)
-       
-   })
-
-
-    //Test case 6 update
-    it('create and update client',function(){
-     updateClient.createAndUpdateClient(cy)
-    })
-    
 
 })
 
-        
-   
-    
+

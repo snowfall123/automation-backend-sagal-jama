@@ -19,8 +19,6 @@ function createRandomClientPayload() {
 
 }
 function deleteClient(cy) {
-    // cy.authenticateSession().then((response => {
-
     cy.request({
         method: "GET",
         url: ENDPOINT_GET_CLIENTS,
@@ -53,31 +51,39 @@ function deleteClient(cy) {
 }
 
 
-function createAndDeleteClient(cy) {
-    cy.authenticateSession().then((response => {
-        let fakeClientPayload = createRandomClientPayload()
+
+function deleteClientAfterCreate(){
+    cy.authenticateSession().then((response =>{
+    cy.request({
+    method: "GET",
+    url: "http://localhost:3000/api/clients",
+    headers:{
+        'X-User-Auth': JSON.stringify(Cypress.env().loginToken),
+        'Content-Type': 'application/json'
+    },
+    }).then((response =>{
+       let lastId = response.body[0].id
         cy.request({
-            method: "POST",
-            url: 'http://localhost:3000/api/client/new',
-            headers: {
+        method: "DELETE",
+        url: "http://localhost:3000/api/client/" + lastId,
+        headers:{
+            'X-User-Auth': JSON.stringify(Cypress.env().loginToken),
+            'Content-Type': 'application/json'
+        },
+    
 
-                'X-User-Auth': JSON.stringify(Cypress.env().LoginToken),
-                'Content-Type': 'application/json'
-            },
-            body: fakeClientPayload
-        }).then((response => {
-            // cy.log(JSON.stringify(response))
-            const responseAsString = JSON.stringify(response)
-            expect(responseAsString).to.have.string(fakeClientPayload.name)
-
-        }))
-
-        deleteClient(cy)
+    })
 
     }))
 
+    
+
+}))
+
 
 }
+
+
 module.exports = {
-    createAndDeleteClient
+    deleteClientAfterCreate
 }
