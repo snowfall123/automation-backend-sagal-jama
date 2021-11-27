@@ -1,4 +1,4 @@
-const { Md5 } = require('ts-md5/dist/md5')
+const { Md5 } = require('ts-md5')
 const data = require('./data')
 
 function userByPassword({ username, password }) {
