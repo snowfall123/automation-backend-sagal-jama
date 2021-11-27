@@ -1,3 +1,4 @@
+
 const faker = require('faker')
 
 const ENDPOINT_GET_CLIENTS = 'http://localhost:3000/api/clients'
@@ -78,3 +79,4 @@ module.exports = {
     createClientRequest, 
     getAllClientsRequest
 }
+
